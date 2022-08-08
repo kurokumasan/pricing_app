@@ -1,0 +1,331 @@
+#include <stdio.h>
+#include <math.h>
+int CASE1,CASE2,check=0; //記錄這是第幾筆測資｜表示是否使用【場地選擇】情境
+int h,h_no,c,s,num__member,avg__stage__co; //儲存先前輸入過的資訊
+
+int five_carry(float x) { //四捨五入函數
+	float r=x*10;
+	int A;
+	A=((int)r)%10;
+	if (A>=5) {
+		return ((int)x)+1;
+	} else {
+		return (int)x;
+	}
+}
+
+int get_int(float x) { //以10為基本單位的進位函數
+	int R;
+	R=((int)x)%10;
+	if(R==0) {
+		int r;
+		r=(int)x;
+		if(x>r) {
+			return r+10;
+		} else {
+			return r;
+		}
+	} else {
+		return ((int)x)-R+10;
+	}
+}
+
+void pre_count1(char place[]) { //估算模式函數
+
+	int X;
+	printf("　請輸入總成本：");
+	scanf("%d",&X);
+
+	int H;
+	printf("　請輸入主辦方總人數：");
+	scanf("%d",&H);
+	h=H;
+
+	int H_NO;
+	printf("　請輸入主辦方「不參與」總人數：");
+	scanf("%d",&H_NO);
+	h_no=H_NO;
+
+	int C;
+	printf("　請輸入協辦方預計總人數：");
+	scanf("%d",&C);
+	c=C;
+
+	int S;
+	printf("　請輸入預計總歌數：");
+	scanf("%d",&S);
+	s=S;
+
+	int num_member;
+	printf("　請輸入歌曲預計平均編制人數(一般為5人)：");
+	scanf("%d",&num_member);
+	num__member=num_member;
+
+	int avg_stage_co;
+	printf("　請輸入協辦方預計平均接歌數(一般為2首)：");
+	scanf("%d",&avg_stage_co);
+	avg__stage__co=avg_stage_co;
+
+	int stage_all=num_member*S; //總上台次數
+	float cost_song=(float)X/stage_all; //每次上台基本成本
+	float fee_co=avg_stage_co*cost_song; //協辦每人付費金額
+	int stage_co=avg_stage_co*C; //協辦上台總次數
+	int stage_main=stage_all-stage_co; //主辦上台總次數
+	float X_main=X-C*fee_co; //主辦總成本
+	/*
+	 printf("【主辦】上台總次數為%d次\n",stage_main);
+	 printf("【協辦】上台總次數為%d次\n",stage_co);
+	 printf("總上台次數為%d次\n",stage_all);
+	 printf("【粗略】每次上台基礎成本%f元\n",cost_song);
+	 printf("主辦總成本為%f元\n",X_main);
+	 */
+	//以下開始計算主辦方的金額分配（需解二元一次聯立組）
+
+	float fee_main_stage=(float)X_main/(stage_main+(1.5*H_NO)); //主辦每首歌費用
+	float fee_main_NOstage=1.5*fee_main_stage; //主辦不上台費用
+	float avg_stage_main=(float)stage_main/(H-H_NO); //主辦平均上台次數
+	float fee_main_avg=fee_main_stage*avg_stage_main; //主辦平均每人付費金額
+
+	printf("\n　估算方案%d：%s\n",CASE1,place);
+	printf("　【主辦】\n　上台：%f(元/首)\n",fee_main_stage);
+	printf("　平均接歌數量：%f(首/人)\n",avg_stage_main);
+	printf("　平均付費金額：%f(元/人)\n",fee_main_avg);
+	printf("　沒上台：%f(元/人)\n",fee_main_NOstage);
+	printf("　【協辦】\n%f(元/人)\n",fee_co);
+
+	//以10元為基本單位取整後
+	printf("\n///////////////若以10為基本單位取整數//////////////\n\n");
+
+	int Fee_main_stage=get_int(fee_main_stage);
+	int upper=(int)ceilf(avg_stage_main); //較大整數
+	int lower=(int)floorf(avg_stage_main); //較小整數
+	int Fee_main_NOstage=get_int(fee_main_NOstage);
+	int Fee_co=get_int(fee_co);
+	int get_money=(Fee_main_stage*stage_main)+(Fee_main_NOstage*H_NO)+(Fee_co*C);
+	int Left_money=get_money-X;
+
+	printf("　【主辦】\n　上台：%d(元/首)\n",Fee_main_stage);
+	if (upper==lower) {
+		printf("　平均接歌數量：%d(首/人)\n",upper);
+		printf("　平均付費金額：%d(元/人)\n",Fee_main_stage*upper);
+	} else {
+		printf("　平均接歌數量：%d到%d(首/人)\n",lower,upper);
+		printf("　平均付費金額：%d到%d(元/人)\n",Fee_main_stage*lower,Fee_main_stage*upper);
+	}
+	printf("　沒上台：%d(元/人)\n",Fee_main_NOstage);
+	printf("　【協辦】\n　%d(元/人)\n",Fee_co);
+	printf("　成本為%d元，總共收%d元，最後會多出%d元納入社費\n\n",X,get_money,Left_money);
+}
+
+void pre_count2(char place[]) { //估算模式函數，只需重新輸入「場地」與「總成本」
+
+	int X;
+	printf("　請輸入總成本：");
+	scanf("%d",&X);
+
+	int stage_all=num__member*s; //總上台次數
+	float cost_song=(float)X/stage_all; //每次上台基本成本
+	float fee_co=avg__stage__co*cost_song; //協辦每人付費金額
+	int stage_co=avg__stage__co*c; //協辦上台總次數
+	int stage_main=stage_all-stage_co; //主辦上台總次數
+	float X_main=X-c*fee_co; //主辦總成本
+	/*
+	 printf("【主辦】上台總次數為%d次\n",stage_main);
+	 printf("【協辦】上台總次數為%d次\n",stage_co);
+	 printf("總上台次數為%d次\n",stage_all);
+	 printf("【粗略】每次上台基礎成本%f元\n",cost_song);
+	 printf("主辦總成本為%f元\n",X_main);
+	 */
+	//以下開始計算主辦方的金額分配（需解二元一次聯立組）
+
+	float fee_main_stage=(float)X_main/(stage_main+(1.5*h_no)); //主辦每首歌費用
+	float fee_main_NOstage=1.5*fee_main_stage; //主辦不上台費用
+	float avg_stage_main=(float)stage_main/(h-h_no); //主辦平均上台次數
+	float fee_main_avg=fee_main_stage*avg_stage_main; //主辦平均每人付費金額
+
+	printf("\n　估算方案%d：%s\n",CASE1,place);
+	printf("　【主辦】\n　上台：%f(元/首)\n",fee_main_stage);
+	printf("　平均接歌數量：%f(首/人)\n",avg_stage_main);
+	printf("　平均付費金額：%f(元/人)\n",fee_main_avg);
+	printf("　沒上台：%f(元/人)\n",fee_main_NOstage);
+	printf("　【協辦】\n　%f(元/人)\n",fee_co);
+
+	//以10元為基本單位取整後
+	printf("\n///////////////若以10為基本單位取整數//////////////\n\n");
+
+	int Fee_main_stage=get_int(fee_main_stage);
+	int upper=(int)ceilf(avg_stage_main); //較大整數
+	int lower=(int)floorf(avg_stage_main); //較小整數
+	int Fee_main_NOstage=get_int(fee_main_NOstage);
+	int Fee_co=get_int(fee_co);
+	int get_money=(Fee_main_stage*stage_main)+(Fee_main_NOstage*h_no)+(Fee_co*c);
+	int Left_money=get_money-X;
+
+	printf("　【主辦】\n　上台：%d(元/首)\n",Fee_main_stage);
+	if (upper==lower) {
+		printf("　平均接歌數量：%d(首/人)\n",upper);
+		printf("　平均付費金額：%d(元/人)\n",Fee_main_stage*upper);
+	} else {
+		printf("　平均接歌數量：%d到%d(首/人)\n",lower,upper);
+		printf("　平均付費金額：%d到%d(元/人)\n",Fee_main_stage*lower,Fee_main_stage*upper);
+	}
+	printf("　沒上台：%d(元/人)\n",Fee_main_NOstage);
+	printf("　【協辦】\n　%d(元/人)\n",Fee_co);
+	printf("　成本為%d元，總共收%d元，最後會多出%d元納入社費\n\n",X,get_money,Left_money);
+}
+
+void detailed_count(char place[]) {
+
+	int X;
+	printf("　請輸入總成本：");
+	scanf("%d",&X);
+
+	int H;
+	printf("　請輸入主辦方總人數：");
+	scanf("%d",&H);
+
+	int H_NO;
+	printf("　請輸入主辦方「不參與」總人數：");
+	scanf("%d",&H_NO);
+	
+	printf("　主辦方共有%d人參與。\n\n",H-H_NO);
+	
+	int C;
+	printf("　請輸入協辦方總人數：");
+	scanf("%d",&C);
+
+	
+	int stage_all,stage_co; //總上台次數,協辦總上台次數
+
+	printf("　（根據Google表單資料）請輸入全員總上台次數：");
+	scanf("%d",&stage_all);
+	printf("　（根據Google表單資料）請輸入協辦總上台次數：");
+	scanf("%d",&stage_co);
+
+	int stage_main=stage_all-stage_co; //主辦總上台次數
+	float cost_song=(float)X/stage_all; //每次上台基本成本
+	float avg_stage_co=(float)stage_co/C; //協辦平均上台次數
+	int Avg_stage_co=five_carry(avg_stage_co); //協辦平均上台次數(四捨五入)
+	float fee_co=Avg_stage_co*cost_song; //協辦每人付費金額
+	float X_main=X-C*fee_co; //主辦總成本
+	/*
+	 printf("【主辦】上台總次數為%d次\n",stage_main);
+	 printf("【協辦】上台總次數為%d次\n",stage_co);
+	 printf("總上台次數為%d次\n",stage_all);
+	 printf("【粗略】每次上台基礎成本%f元\n",cost_song);
+	 printf("主辦總成本為%f元\n",X_main);
+	 */
+	//以下開始計算主辦方的金額分配（需解二元一次聯立組）
+
+	float fee_main_stage=(float)X_main/(stage_main+(1.5*H_NO)); //主辦每首歌費用
+	float fee_main_NOstage=1.5*fee_main_stage; //主辦不上台費用
+	float avg_stage_main=(float)stage_main/(H-H_NO); //主辦平均上台次數
+	float fee_main_avg=fee_main_stage*avg_stage_main; //主辦平均每人付費金額
+
+	printf("\n　精算方案%d：%s\n",CASE2,place);
+	printf("　【主辦】\n　上台：%f(元/首)\n",fee_main_stage);
+	printf("　平均接歌數量：%f(首/人)\n",avg_stage_main);
+	printf("　平均付費金額：%f(元/人)\n",fee_main_avg);
+	printf("　沒上台：%f(元/人)\n",fee_main_NOstage);
+	printf("　【協辦】\n　%f(元/人)\n",fee_co);
+	printf("　平均上台次數：%f，四捨五入取%d次\n",avg_stage_co,Avg_stage_co);
+
+	//以10元為基本單位取整後
+
+	printf("\n///////////////若以10為基本單位取整數///////////////\n\n");
+
+	int Fee_main_stage=get_int(fee_main_stage);
+	int upper=(int)ceilf(avg_stage_main); //較大整數
+	int lower=(int)floorf(avg_stage_main); //較小整數
+	int Fee_main_NOstage=get_int(fee_main_NOstage);
+	int Fee_co=get_int(fee_co);
+	int get_money=(Fee_main_stage*stage_main)+(Fee_main_NOstage*H_NO)+(Fee_co*C);
+	int Left_money=get_money-X;
+
+	printf("　【主辦】\n　上台：%d(元/首)\n",Fee_main_stage);
+	if (upper==lower) {
+		printf("　平均接歌數量：%d(首/人)\n",upper);
+		printf("　平均付費金額：%d(元/人)\n",Fee_main_stage*upper);
+	} else {
+		printf("　平均接歌數量：%d到%d(首/人)\n",lower,upper);
+		printf("　平均付費金額：%d到%d(元/人)\n",Fee_main_stage*lower,Fee_main_stage*upper);
+	}
+	printf("　沒上台：%d(元/人)\n",Fee_main_NOstage);
+	printf("　【協辦】\n　%d(元/人)\n",Fee_co);
+	printf("　成本為%d元，總共收%d元，最後會多出%d元納入社費\n\n",X,get_money,Left_money);
+}
+
+int main() {
+	CASE1=1,CASE2=1;
+	while (1) {
+		char type;
+		if (check==0) {
+			printf("　請選擇計算模式：\n　估算請輸入A；精算請輸入B；使用說明請輸入C\n　");
+			scanf("%c",&type);
+			//   printf("type是%c\n",type);
+			getchar();
+		} else if (check==1) {
+			type='A';
+		}
+		if (type=='C'||type=='c') {
+			printf("　此程式主要有2種使用時機：\n　　1.活動籌辦「前期」，「估算」每個人的付費金額。\n　　2.活動籌辦「後期」，「精算」每個人的付費金額。\n\n　＃顧慮到前期可能有多個場地選項，\n　　在輸入多組資料時，可開啟「場地評估模式」，\n　　如此一來，除了「場地名稱」與「總成本」之外，\n　　其他資料都不必重新輸入。\n\n　＃精算模式需輸入的「全員總上台次數」與「協辦總上台次數」，\n　　可以從統計歌單的google表單後臺資訊運算獲得。\n\n　＃結論會輸出兩組數據，分別是：\n　　「理論金額」與「方便金額」\n　　前者通常會有一堆小數點，\n　　因此為了方便收錢作業，便以10元為基本單位做了簡單進位，\n　　基本上每個人最多只會多付10元，但是可以有效減低主辦方的負擔。\n　　不過，到底要收哪個金額，還是交由使用者自行決定。\n\n　＃若有算法上的疑問，請參照【海熱浪活動規章】。\n\n　＃若有其他問題，請回報製作者(11屆學長)，FB：鄭朝富。\n\n");
+		} else if (type=='A'||type=='a') {
+			printf("　已進入估算模式。\n");
+			char Name_place[50]= {-1};
+			if (CASE1==1) {
+				printf("　請問是否嘗試多組資料？(Y/N)\n　");
+				char muti_data;
+				scanf("%c",&muti_data);
+				getchar();
+				if (muti_data=='Y'||muti_data=='y') {
+					printf("　請問是否開啟「場地評估」？(Y/N)\n　");
+					char scene_choice;
+					scanf("%c",&scene_choice);
+					getchar();
+					if (scene_choice=='Y'||scene_choice=='y') {
+						check=1; //代表下次計算可以只重新輸入總成本
+						printf("　請輸入場地名稱：");
+						scanf("%s",Name_place);
+					}
+				}
+				pre_count1(Name_place);
+				CASE1++;
+			} else if(CASE1>=2&&check==1) { //第二個以上方案，場地評估情境
+				printf("　請輸入場地名稱：");
+				scanf("%s",Name_place);
+				pre_count2(Name_place);
+				CASE1++;
+			} else if (CASE1>=2&&check==0) {
+				printf("　請輸入場地名稱：");
+				scanf("%s",Name_place);
+				pre_count1(Name_place);
+				CASE1++;
+			}
+		} else if(type=='B'||type=='b') {
+			printf("　已進入精算模式。\n");
+			char Name_place[50]= {-1};
+			printf("　請輸入場地名稱：");
+			scanf("%s",Name_place);
+			detailed_count(Name_place);
+			CASE2++;
+		} else {
+			printf("　輸入規則錯誤。請重新輸入有效指令。\n");
+			continue;
+		}
+		printf("　請問是否要繼續使用？(Y/N)\n　");
+		if (type=='A'||type=='a'||type=='B'||type=='b') {
+			getchar();
+		}
+		scanf("%c",&type);
+		getchar();
+		if (type=='Y'||type=='y') { //Y代表要繼續
+		} else {
+			printf("　感謝使用！祝活動順利！\n");
+			break;
+		}
+		printf("==================================\n");
+	}
+	return 0;
+}
+
+
