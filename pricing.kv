@@ -1,54 +1,148 @@
-<PricingGrid>
-
-	
-
+<EstimationScreen>
+	name: 'Estimation'
 	GridLayout:
 		cols: 1
 		size: root.width, root.height
+		size_hint: .8, .9
+		pos_hint: {'center_x':.5, 'center_y':.5}
 
 		GridLayout:
 			cols:2
 			Label:
-				text: 'ets'
+				text: '總成本'
+				font_name: 'DroidSansFallbackFull'
 			TextInput:
 				multilines: False
 	
 			Label:
-				text: 'ets'
+				text: '主辦方人數'
+				font_name: 'DroidSansFallbackFull'
 			TextInput:
 				multilines: False
 	
 			Label:
-				text: 'ets'
+				text: '主辦方「不參與」人數'
+				font_name: 'DroidSansFallbackFull'
 			TextInput:
 				multilines: False
 	
 			Label:
-				text: 'ets'
+				text: '協辦方預計總人數'
+				font_name: 'DroidSansFallbackFull'
 			TextInput:
 				multilines: False
 	
 			Label:
-				text: 'ets'
+				text: '預計總歌數'
+				font_name: 'DroidSansFallbackFull'
 			TextInput:
 				multilines: False
 	
 			Label:
-				text: 'ets'
+				text: '歌曲預計平均編制人數'
+				font_name: 'DroidSansFallbackFull'
 			TextInput:
 				multilines: False
+	
+			Label:
+				text: '協辦方預計平均接歌數'
+				font_name: 'DroidSansFallbackFull'
+			TextInput:
+				multilines: False
+		
+		GridLayout:
+			cols:1
+			Label:
+				text: '計算結果'
+				font_name: 'DroidSansFallbackFull'
+				size_hint: 1, .3
+			Label:
+				text: ''
+				font_name: 'DroidSansFallbackFull'
+				
+
+	GridLayout:
+		cols: 2
+		size_hint: .6, .1
+		size: root.width, root.height
+		pos_hint: {'center_x':0.5}
+		Button:
+			text: '開始計算'
+			font_name: 'DroidSansFallbackFull'
 	
 		Button:
-			text: '估算模式'
+			text: '切換為精算模式'
+			font_name: 'DroidSansFallbackFull'
+			on_release: root.switch_settlement()
+			#on_release: root.manager.current='Settlement'
+
+<SettlementScreen>
+	name: 'Settlement'
+	GridLayout:
+		cols: 1
+		size: root.width, root.height
+		size_hint: .8, .9
+		pos_hint: {'center_x':.5, 'center_y':.5}
+
+		GridLayout:
+			cols:2
+			Label:
+				text: '總成本'
+				font_name: 'DroidSansFallbackFull'
+			TextInput:
+				multilines: False
+	
+			Label:
+				text: '主辦方總人數'
+				font_name: 'DroidSansFallbackFull'
+			TextInput:
+				multilines: False
+	
+			Label:
+				text: '主辦方「不參與」總人數'
+				font_name: 'DroidSansFallbackFull'
+			TextInput:
+				multilines: False
+	
+			Label:
+				text: '協辦方總人數'
+				font_name: 'DroidSansFallbackFull'
+			TextInput:
+				multilines: False
+	
+			Label:
+				text: '全員總上台次數'
+				font_name: 'DroidSansFallbackFull'
+			TextInput:
+				multilines: False
+	
+			Label:
+				text: '協辦總上台次數'
+				font_name: 'DroidSansFallbackFull'
+			TextInput:
+				multilines: False
+
+		GridLayout:
+			cols:1
+			Label:
+				text: '計算結果'
+				font_name: 'DroidSansFallbackFull'
+				size_hint: 1, .3
+			Label:
+				text: ''
+				font_name: 'DroidSansFallbackFull'
+				
+
+	GridLayout:
+		cols: 2
+		size_hint: .6, .1
+		size: root.width, root.height
+		pos_hint: {'center_x':0.5}
+		Button:
+			text: '開始計算'
+			font_name: 'DroidSansFallbackFull'
 	
 		Button:
-			text: '精算模式'
-
-</PricingGrid>
-
-#        self.size_hint = (0.6,0.7)
-#        self.pos_hint = {'center_x': 0.5, 'center_y': 0.5}
-    
-
-#    def test(self, e):
-#        self.greeting.text = 'It\'s ' + self.user.text + '!'
+			text: '切換為估算模式'
+			font_name: 'DroidSansFallbackFull'
+			on_release: root.switch_estimation()
