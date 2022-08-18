@@ -25,6 +25,14 @@ class SettlementScreen(Screen):
     def switch_estimation(self):
         print('switch to estimation mode')
         App.get_running_app().root.current = 'Estimation'
+    def calculation(self, cost, host, host_no, guests, all_stages, guest_stages):
+        return price_detailed(\
+                int(cost), \
+                int(host), \
+                int(host_no), \
+                int(guests), \
+                int(all_stages), \
+                int(guest_stages))
 
 class PricingApp(App):
     def build(self):
