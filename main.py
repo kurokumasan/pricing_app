@@ -44,11 +44,4 @@ class PricingApp(App):
 
 
 if __name__ == '__main__':
-    LabelBase.register(name='NotoSans',\
-            fn_regular='/usr/share/fonts/truetype/notosans/NotoSans-Regular.ttf',\
-            fn_bold='/usr/share/fonts/truetype/notosans/NotoSans-Bold.ttf',\
-            fn_italic='/usr/share/fonts/truetype/notosans/NotoSans-Italic.ttf',\
-            fn_bolditalic='/usr/share/fonts/truetype/notosans/NotoSans-BoldItalic.ttf'\
-            )
-
     PricingApp().run()
