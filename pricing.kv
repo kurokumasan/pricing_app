@@ -101,18 +101,21 @@
 					text: '計算結果'
 					font_name: 'NotoSansCJK'
 					size_hint: 1, .2
-				ScrollView:
-					size: self.size
-					effect_cls: "ScrollEffect"
-					Label:
-						id: result
-						text: ' '
-						font_name: 'NotoSansCJK'
-						#text_size: self.width, None
-						size_hint_x: None
-						size_hint_y: None
-						height: self.texture_size[1]
-						width: self.texture_size[0]
+				GridLayout:
+					cols: 1
+					size_hint: .8, 1
+					ScrollView:
+						size: self.size
+						effect_cls: "ScrollEffect"
+						Label:
+							id: result
+							text: ''
+							font_name: 'NotoSansCJK'
+							#text_size: self.width, None
+							size_hint_x: None
+							size_hint_y: None
+							height: self.texture_size[1]
+							width: self.texture_size[0]
 				Button:
 					size_hint: 1, .2
 					text: '開始計算'
@@ -226,16 +229,19 @@
 					text: '計算結果'
 					font_name: 'NotoSansCJK'
 					size_hint: 1, .2
-				ScrollView:
-					size: self.size
-					effect_cls: "ScrollEffect"
-					Label:
-						id: result
-						text: ''
-						font_name: 'NotoSansCJK'
-						text_size: self.width, None
-						size_hint_y: None
-						height: self.texture_size[1]
+				GridLayout:
+					cols: 1
+					size_hint: .8, 1
+					ScrollView:
+						size: self.size
+						effect_cls: "ScrollEffect"
+						Label:
+							id: result
+							text: ''
+							font_name: 'NotoSansCJK'
+							text_size: self.width, None
+							size_hint_y: None
+							height: self.texture_size[1]
 				Button:
 					text: '開始計算'
 					font_name: 'NotoSansCJK'
