@@ -47,7 +47,6 @@ class SettlementScreen(Screen):
 
     def switch_description(self, source):
         print('switch to description mode')
-        DescriptionScreen().set_source(source)
         App.get_running_app().root.current = 'Description'
 
     def calculation(self, cost, host, host_no, guests, all_stages, guest_stages):
