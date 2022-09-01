@@ -11,12 +11,6 @@
 		cols: 1
 		size_hint: .9, .9
 		pos_hint: {'center_x':.5, 'center_y':.5}
-		canvas.before:
-			Color:
-				rgba: 0, 0, 0, .5
-			Rectangle:
-				pos: self.pos
-				size: self.size
 		GridLayout:
 			cols: 1
 			size: root.width, root.height
@@ -25,9 +19,22 @@
 	
 			GridLayout:
 				cols:2
+				canvas.before:
+					Color:
+						rgba: 255/255, 235/255, 53/255, 1
+					Rectangle:
+						pos: self.pos
+						size: self.size
 				Label:
 					text: '總成本'
 					font_name: 'NotoSansCJK'
+					color: 0, 0, 0, 1
+					canvas.before:
+						Color:
+							rgba: 0, 0, 0, 1
+						Line:
+							width: 1
+							points: self.x, self.y, self.x + self.width, self.y
 				TextInput:
 					id: cost
 					multilines: False
@@ -38,6 +45,13 @@
 				Label:
 					text: '主辦方人數'
 					font_name: 'NotoSansCJK'
+					color: 0, 0, 0, 1
+					canvas.before:
+						Color:
+							rgba: 0, 0, 0, 1
+						Line:
+							width: 1
+							points: self.x, self.y, self.x + self.width, self.y
 				TextInput:
 					id: host
 					multilines: False
@@ -48,6 +62,13 @@
 				Label:
 					text: '主辦方「不參與」人數'
 					font_name: 'NotoSansCJK'
+					color: 0, 0, 0, 1
+					canvas.before:
+						Color:
+							rgba: 0, 0, 0, 1
+						Line:
+							width: 1
+							points: self.x, self.y, self.x + self.width, self.y
 				TextInput:
 					id: host_no
 					multilines: False
@@ -58,6 +79,13 @@
 				Label:
 					text: '協辦方預計總人數'
 					font_name: 'NotoSansCJK'
+					color: 0, 0, 0, 1
+					canvas.before:
+						Color:
+							rgba: 0, 0, 0, 1
+						Line:
+							width: 1
+							points: self.x, self.y, self.x + self.width, self.y
 				TextInput:
 					id :guests
 					multilines: False
@@ -68,6 +96,13 @@
 				Label:
 					text: '預計總歌數'
 					font_name: 'NotoSansCJK'
+					color: 0, 0, 0, 1
+					canvas.before:
+						Color:
+							rgba: 0, 0, 0, 1
+						Line:
+							width: 1
+							points: self.x, self.y, self.x + self.width, self.y
 				TextInput:
 					id: songs
 					multilines: False
@@ -78,6 +113,13 @@
 				Label:
 					text: '歌曲預計平均編制人數'
 					font_name: 'NotoSansCJK'
+					color: 0, 0, 0, 1
+					canvas.before:
+						Color:
+							rgba: 0, 0, 0, 1
+						Line:
+							width: 1
+							points: self.x, self.y, self.x + self.width, self.y
 				TextInput:
 					id: group
 					multilines: False
@@ -88,6 +130,13 @@
 				Label:
 					text: '協辦方預計平均接歌數'
 					font_name: 'NotoSansCJK'
+					color: 0, 0, 0, 1
+					canvas.before:
+						Color:
+							rgba: 0, 0, 0, 1
+						Line:
+							width: 1
+							points: self.x, self.y, self.x + self.width, self.y
 				TextInput:
 					id: guest_stage
 					input_type: 'number'
@@ -97,6 +146,12 @@
 			
 			GridLayout:
 				cols:1
+				canvas.before:
+					Color:
+						rgba: 0, 0, 0, 1
+					Rectangle:
+						pos: self.pos
+						size: self.size
 				Label:
 					text: '計算結果'
 					font_name: 'NotoSansCJK'
@@ -117,20 +172,29 @@
 							height: self.texture_size[1]
 							width: self.texture_size[0]
 				Button:
+					canvas.before:
+						Color:
+							rgba: 60/255, 192/255, 1, 1
+						Rectangle:
+							pos: self.pos
+							size: self.size
 					size_hint: 1, .2
 					text: '開始計算'
 					font_name: 'NotoSansCJK'
 					on_release: root.ids.result.text = root.calculation(root.ids.cost.text, root.ids.host.text, root.ids.host_no.text, root.ids.guests.text, root.ids.songs.text, root.ids.group.text, root.ids.guest_stage.text)
 					
 		GridLayout:
-			cols: 2
+			cols: 3
 			pos_hint: {'center_x':0.5}
 			size_hint: .3, .075
 			Button:
 				text: '使用說明'
 				font_name: 'NotoSansCJK'
 				on_release: root.switch_description()
-		
+			Button:
+				text: '方案總覽'
+				font_name: 'NotoSansCJK'
+				on_release: root.switch_comparison()
 			Button:
 				text: '切換為精算模式'
 				font_name: 'NotoSansCJK'
@@ -149,12 +213,6 @@
 		cols: 1
 		size_hint: .9, .9
 		pos_hint: {'center_x':.5, 'center_y':.5}
-		canvas.before:
-			Color:
-				rgba: 0, 0, 0, .5
-			Rectangle:
-				pos: self.pos
-				size: self.size
 		GridLayout:
 			cols: 1
 			size: root.width, root.height
@@ -162,10 +220,23 @@
 			pos_hint: {'center_x':.5, 'center_y':.5}
 	
 			GridLayout:
+				canvas.before:
+					Color:
+						rgba: 255/255, 235/255, 53/255, 1
+					Rectangle:
+						pos: self.pos
+						size: self.size
 				cols:2
 				Label:
 					text: '總成本'
 					font_name: 'NotoSansCJK'
+					color: 0, 0, 0, 1
+					canvas.before:
+						Color:
+							rgba: 0, 0, 0, 1
+						Line:
+							width: 1
+							points: self.x, self.y, self.x + self.width, self.y
 				TextInput:
 					id: cost
 					multilines: False
@@ -176,6 +247,13 @@
 				Label:
 					text: '主辦方總人數'
 					font_name: 'NotoSansCJK'
+					color: 0, 0, 0, 1
+					canvas.before:
+						Color:
+							rgba: 0, 0, 0, 1
+						Line:
+							width: 1
+							points: self.x, self.y, self.x + self.width, self.y
 				TextInput:
 					id: host
 					multilines: False
@@ -186,6 +264,13 @@
 				Label:
 					text: '主辦方「不參與」總人數'
 					font_name: 'NotoSansCJK'
+					color: 0, 0, 0, 1
+					canvas.before:
+						Color:
+							rgba: 0, 0, 0, 1
+						Line:
+							width: 1
+							points: self.x, self.y, self.x + self.width, self.y
 				TextInput:
 					id: host_no
 					multilines: False
@@ -196,6 +281,13 @@
 				Label:
 					text: '協辦方總人數'
 					font_name: 'NotoSansCJK'
+					color: 0, 0, 0, 1
+					canvas.before:
+						Color:
+							rgba: 0, 0, 0, 1
+						Line:
+							width: 1
+							points: self.x, self.y, self.x + self.width, self.y
 				TextInput:
 					id :guests
 					multilines: False
@@ -206,6 +298,13 @@
 				Label:
 					text: '全員總上台次數'
 					font_name: 'NotoSansCJK'
+					color: 0, 0, 0, 1
+					canvas.before:
+						Color:
+							rgba: 0, 0, 0, 1
+						Line:
+							width: 1
+							points: self.x, self.y, self.x + self.width, self.y
 				TextInput:
 					id: all_stages
 					input_type: 'number'
@@ -216,6 +315,13 @@
 				Label:
 					text: '協辦總上台次數'
 					font_name: 'NotoSansCJK'
+					color: 0, 0, 0, 1
+					canvas.before:
+						Color:
+							rgba: 0, 0, 0, 1
+						Line:
+							width: 1
+							points: self.x, self.y, self.x + self.width, self.y
 				TextInput:
 					id: guest_stages
 					input_type: 'number'
@@ -225,6 +331,12 @@
 
 			GridLayout:
 				cols:1
+				canvas.before:
+					Color:
+						rgba: 0, 0, 0, 1
+					Rectangle:
+						pos: self.pos
+						size: self.size
 				Label:
 					text: '計算結果'
 					font_name: 'NotoSansCJK'
@@ -243,6 +355,12 @@
 							size_hint_y: None
 							height: self.texture_size[1]
 				Button:
+					canvas.before:
+						Color:
+							rgba: 60/255, 192/255, 1, 1
+						Rectangle:
+							pos: self.pos
+							size: self.size
 					text: '開始計算'
 					font_name: 'NotoSansCJK'
 					size_hint: 1, .2
@@ -294,3 +412,187 @@
 				text: '使用精算模式'
 				font_name: 'NotoSansCJK'
 				on_release: root.switch_settlement()
+
+<ComparisonScreen>
+	rv: rv
+	name: 'Comparison'
+	canvas.before:
+		Color:
+			rgba: 60/255, 192/255, 1, 1
+		Rectangle:
+			pos: self.pos
+			size: self.size
+
+	GridLayout:
+		id: comparison_table
+		cols: 1
+		size_hint: .9, .9
+		pos_hint: {'center_x':.5, 'center_y':.5}
+		GridLayout:
+			cols: 2
+			canvas.before:
+				Color:
+					rgba: 0, 0, 0, 1
+				Rectangle:
+					pos: self.pos
+					size: self.size
+			GridLayout:
+				canvas.before:
+					Color:
+						rgba: 255/255, 235/255, 53/255, 1
+					Rectangle:
+						pos: self.pos
+						size: self.size
+				cols: 1
+				size_hint_x: .7
+				Label:
+					text: '場地方案'
+					font_name: 'NotoSansCJK'
+					color: 0, 0, 0, 1
+					canvas.before:
+						Color:
+							rgba: 0, 0, 0, 1
+						Line:
+							width: 1
+							points: self.x, self.y, self.x + self.width, self.y
+				Label:
+					text: '上台 (元/首)'
+					font_name: 'NotoSansCJK'
+					color: 0, 0, 0, 1
+					canvas.before:
+						Color:
+							rgba: 0, 0, 0, 1
+						Line:
+							width: 1
+							points: self.x, self.y, self.x + self.width, self.y
+				Label:
+					text: '平均接歌數量 (首/人)'
+					font_name: 'NotoSansCJK'
+					color: 0, 0, 0, 1
+					canvas.before:
+						Color:
+							rgba: 0, 0, 0, 1
+						Line:
+							width: 1
+							points: self.x, self.y, self.x + self.width, self.y
+				Label:
+					text: '平均付費金額 (元/人)'
+					font_name: 'NotoSansCJK'
+					color: 0, 0, 0, 1
+					canvas.before:
+						Color:
+							rgba: 0, 0, 0, 1
+						Line:
+							width: 1
+							points: self.x, self.y, self.x + self.width, self.y
+				Label:
+					text: '沒上台 (元/人)'
+					font_name: 'NotoSansCJK'
+					color: 0, 0, 0, 1
+					canvas.before:
+						Color:
+							rgba: 0, 0, 0, 1
+						Line:
+							width: 1
+							points: self.x, self.y, self.x + self.width, self.y
+				Label:
+					text: '承辦 (元/人)'
+					font_name: 'NotoSansCJK'
+					color: 0, 0, 0, 1
+					canvas.before:
+						Color:
+							rgba: 0, 0, 0, 1
+						Line:
+							width: 1
+							points: self.x, self.y, self.x + self.width, self.y
+			RecycleView:
+				id: rv
+				viewclass: 'RV'
+				RecycleBoxLayout:
+					default_size: dp(100), None
+					default_size_hint: None, 1
+					size_hint_x: None
+					width: self.minimum_width
+					orientation: 'horizontal'
+		GridLayout:
+			cols: 2
+			size_hint: .9, .1
+			Button:
+				text: '返回估算模式'
+				font_name: 'NotoSansCJK'
+				on_release: root.switch_estimation()
+			Button:
+				text: '清除並返回'
+				font_name: 'NotoSansCJK'
+				on_release: root.clean_memory_then_go_back()
+		
+
+<RV@BoxLayout>
+	label1: 'test==='
+	label2: 'test==='
+	label3: 'test==='
+	label4: 'test==='
+	label5: 'test==='
+	label6: 'test==='
+	GridLayout:
+		cols: 1
+		Label:
+			id: 'label1'
+			text: root.label1
+			font_name: 'NotoSansCJK'
+			canvas.before:
+				Color:
+					rgba: 1, 1, 1, 1
+				Line:
+					width: 1
+					points: self.x + self.width, self.y + self.height, self.x + self.width, self.y
+		Label:
+			id: 'label2'
+			text: root.label2
+			font_name: 'NotoSansCJK'
+			canvas.before:
+				Color:
+					rgba: 1, 1, 1, 1
+				Line:
+					width: 1
+					points: self.x + self.width, self.y + self.height, self.x + self.width, self.y
+		Label:
+			id: 'label3'
+			text: root.label3
+			font_name: 'NotoSansCJK'
+			canvas.before:
+				Color:
+					rgba: 1, 1, 1, 1
+				Line:
+					width: 1
+					points: self.x + self.width, self.y + self.height, self.x + self.width, self.y
+		Label:
+			id: 'label4'
+			text: root.label4
+			font_name: 'NotoSansCJK'
+			canvas.before:
+				Color:
+					rgba: 1, 1, 1, 1
+				Line:
+					width: 1
+					points: self.x + self.width, self.y + self.height, self.x + self.width, self.y
+		Label:
+			id: 'label5'
+			text: root.label5
+			font_name: 'NotoSansCJK'
+			canvas.before:
+				Color:
+					rgba: 1, 1, 1, 1
+				Line:
+					width: 1
+					points: self.x + self.width, self.y + self.height, self.x + self.width, self.y
+		Label:
+			id: 'label6'
+			text: root.label6
+			font_name: 'NotoSansCJK'
+			canvas.before:
+				Color:
+					rgba: 1, 1, 1, 1
+				Line:
+					width: 1
+					points: self.x + self.width, self.y + self.height, self.x + self.width, self.y
