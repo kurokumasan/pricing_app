@@ -26,6 +26,23 @@
 						pos: self.pos
 						size: self.size
 				Label:
+					text: '場地名稱'
+					font_name: 'NotoSansCJK'
+					color: 0, 0, 0, 1
+					canvas.before:
+						Color:
+							rgba: 0, 0, 0, 1
+						Line:
+							width: 1
+							points: self.x, self.y, self.x + self.width, self.y
+				TextInput:
+					id: place
+					multilines: False
+					hint_text: '場地名稱'
+					font_name: 'NotoSansCJK'
+					input_type: 'text'
+		
+				Label:
 					text: '總成本'
 					font_name: 'NotoSansCJK'
 					color: 0, 0, 0, 1
@@ -181,7 +198,7 @@
 					size_hint: 1, .2
 					text: '開始計算'
 					font_name: 'NotoSansCJK'
-					on_release: root.ids.result.text = root.calculation(root.ids.cost.text, root.ids.host.text, root.ids.host_no.text, root.ids.guests.text, root.ids.songs.text, root.ids.group.text, root.ids.guest_stage.text)
+					on_release: root.ids.result.text = root.calculation(root.ids.place.text, root.ids.cost.text, root.ids.host.text, root.ids.host_no.text, root.ids.guests.text, root.ids.songs.text, root.ids.group.text, root.ids.guest_stage.text)
 					
 		GridLayout:
 			cols: 3
@@ -192,7 +209,7 @@
 				font_name: 'NotoSansCJK'
 				on_release: root.switch_description()
 			Button:
-				text: '方案總覽'
+				text: '資料彙整'
 				font_name: 'NotoSansCJK'
 				on_release: root.switch_comparison()
 			Button:
@@ -389,16 +406,18 @@
 			pos: self.pos
 			size: self.size
 
+	#scale: min(root.ids.desc.size[0]/root.ids.desc.texture_size[0], root.ids.desc.size[1]/root.ids.desc.texture_size[1])
 	GridLayout:
 		cols: 1
 		size_hint: .9, .9
 		pos_hint: {'center_x':.5, 'center_y':.5}
 		Image:
-			source: 'image/description_pic.png'
+			id: desc
+			source: 'image/description_pic.jpg'
 			pos: self.pos
-			size_hinti_y: None
+			#size_hint_y: None
 			#height: self.texture_size[1]
-			size: self.texture_size
+			size: self.size
 			allow_stretch: True
 
 		GridLayout:
@@ -412,6 +431,27 @@
 				text: '使用精算模式'
 				font_name: 'NotoSansCJK'
 				on_release: root.switch_settlement()
+	FloatLayout:
+		Button:
+			id: yt
+			background_color: 0, 0, 0, 0
+			size_hint: None, None
+			on_release: root.go_to_yt()
+			Image:
+				id: yt_icon
+				source: 'image/youtube_icon.png'
+				size: self.parent.size
+				pos: self.parent.pos
+		Button:
+			id: drive
+			background_color: 0, 0, 0, 0
+			size_hint: None, None
+			on_release: root.go_to_drive()
+			Image:
+				id: drive_icon
+				source: 'image/drive_icon.png'
+				size: self.parent.size
+				pos: self.parent.pos
 
 <ComparisonScreen>
 	rv: rv
@@ -444,7 +484,7 @@
 						pos: self.pos
 						size: self.size
 				cols: 1
-				size_hint_x: .7
+				size_hint_x: .5
 				Label:
 					text: '場地方案'
 					font_name: 'NotoSansCJK'
@@ -466,7 +506,7 @@
 							width: 1
 							points: self.x, self.y, self.x + self.width, self.y
 				Label:
-					text: '平均接歌數量 (首/人)'
+					text: '平均接歌數量\n       (首/人)'
 					font_name: 'NotoSansCJK'
 					color: 0, 0, 0, 1
 					canvas.before:
@@ -476,7 +516,7 @@
 							width: 1
 							points: self.x, self.y, self.x + self.width, self.y
 				Label:
-					text: '平均付費金額 (元/人)'
+					text: '平均付費金額\n       (元/人)'
 					font_name: 'NotoSansCJK'
 					color: 0, 0, 0, 1
 					canvas.before:

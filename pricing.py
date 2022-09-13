@@ -19,7 +19,7 @@ def price_estimation(cost:int, host:int, host_no:int, guests:int, songs:int, gro
 
         if (host_avg_stages==int(host_avg_stages)):
             result = f"\
-    估算方案：\n\
+    估算方案：{place}\n\
         【主辦】\n\
         上台：{host_cost_per_song:.4f}(元/首)\n\
             平均接歌數量：{host_avg_stages:.4f}(首/人)\n\
@@ -37,10 +37,10 @@ def price_estimation(cost:int, host:int, host_no:int, guests:int, songs:int, gro
         【協辦】\n\
             {get_int(guest_cost)}(元/人)\n\
         成本為{cost}元，總共收{income}元，最後會多出{income-cost}元納入社費"
-            return result, (f'{get_int(host_cost_per_song)}', f'{int(host_avg_stages)}', f'{int(host_avg_stages)*get_int(host_cost_per_song)}', f'{get_int(host_cost_without_stage)}', f'{get_int(guest_cost)}')
+            return result, (place, f'{get_int(host_cost_per_song)}', f'{int(host_avg_stages)}', f'{int(host_avg_stages)*get_int(host_cost_per_song)}', f'{get_int(host_cost_without_stage)}', f'{get_int(guest_cost)}')
         else:
             result = f"\
-    估算方案：\n\
+    估算方案：{place}\n\
         【主辦】\n\
             上台：{host_cost_per_song:.4f}(元/首)\n\
             平均接歌數量：{host_avg_stages:.4f}(首/人)\n\
@@ -58,7 +58,7 @@ def price_estimation(cost:int, host:int, host_no:int, guests:int, songs:int, gro
         【協辦】\n\
             {get_int(guest_cost)}(元/人)\n\
         成本為{cost}元，總共收{income}元，最後會多出{income-cost}元納入社費"
-            return result, (f'{get_int(host_cost_per_song)}', f'{int(host_avg_stages)}-{int(host_avg_stages)+1}', f'{int(host_avg_stages)*get_int(host_cost_per_song)}-{(int(host_avg_stages)+1)*get_int(host_cost_per_song)}', f'{get_int(host_cost_without_stage)}', f'{get_int(guest_cost)}')
+            return result, (place, f'{get_int(host_cost_per_song)}', f'{int(host_avg_stages)}-{int(host_avg_stages)+1}', f'{int(host_avg_stages)*get_int(host_cost_per_song)}-{(int(host_avg_stages)+1)*get_int(host_cost_per_song)}', f'{get_int(host_cost_without_stage)}', f'{get_int(guest_cost)}')
     except:
         return 'Invalid input'
     

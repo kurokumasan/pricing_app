@@ -2,7 +2,10 @@ from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 from kivy.core.text import LabelBase
+from kivy.core.window import Window
 from kivy.metrics import dp
+
+import webbrowser
 
 from pricing import price_estimation, price_detailed
 
@@ -24,7 +27,9 @@ class EstimationScreen(Screen):
         App.get_running_app().root.current = 'Comparison'
 
 
-    def calculation(self, cost, host, host_no, guests, songs, group, guest_stage):
+    def calculation(self, place, cost, host, host_no, guests, songs, group, guest_stage):
+        if place == '':
+            place = ''
         if cost == '':
             return f'總成本不可為0'
         if host == '':
@@ -47,7 +52,8 @@ class EstimationScreen(Screen):
                 int(guests), \
                 int(songs), \
                 int(group), \
-                int(guest_stage))
+                int(guest_stage), \
+                place)
         print(record)
 
         global data
@@ -88,6 +94,25 @@ class SettlementScreen(Screen):
                 int(guest_stages))
 
 class DescriptionScreen(Screen):
+    def __init__(self, **kwargs):
+        super(DescriptionScreen, self).__init__(**kwargs)
+        win_size = Window.size
+        self.scale = min(win_size[0]/self.ids.desc.texture_size[0], win_size[1]/self.ids.desc.texture_size[1])
+
+        # get desc real size
+        shift_x = self.scale * self.ids.desc.texture_size[0]
+        shift_y = self.scale * self.ids.desc.texture_size[1]
+
+        # yt icon
+        self.ids.yt.size = shift_x*0.12, shift_y*0.06
+        self.ids.yt.x = win_size[0]*0.5 + shift_x*0.04
+        self.ids.yt.y = win_size[1]*0.55 + shift_y*0.23
+
+        # drive icon
+        self.ids.drive.size = shift_x*0.12, shift_y*0.06
+        self.ids.drive.x = win_size[0]*0.5 + shift_x*0.05
+        self.ids.drive.y = win_size[1]*0.55 - shift_y*0.38
+
     def switch_estimation(self):
         print('switch to estimation mode')
         App.get_running_app().root.current = 'Estimation'
@@ -95,6 +120,34 @@ class DescriptionScreen(Screen):
     def switch_settlement(self):
         print('switch to settlement mode')
         App.get_running_app().root.current = 'Settlement'
+
+    def on_enter(self):
+        win_size = Window.size
+        self.scale = min(win_size[0]/self.ids.desc.texture_size[0], 0.9*win_size[1]/self.ids.desc.texture_size[1])
+
+        # get desc real size
+        shift_x = self.scale * self.ids.desc.texture_size[0]
+        shift_y = self.scale * self.ids.desc.texture_size[1]
+
+        # yt icon
+        self.ids.yt.size = shift_x*0.14, shift_y*0.07
+        self.ids.yt.x = win_size[0]*0.5 + shift_x*0.04
+        self.ids.yt.y = win_size[1]*0.55 + shift_y*0.25
+
+        # drive icon
+        self.ids.drive.size = shift_x*0.14, shift_y*0.07
+        self.ids.drive.x = win_size[0]*0.5 + shift_x*0.05
+        self.ids.drive.y = win_size[1]*0.55 - shift_y*0.42
+
+        print(self.scale, shift_x, shift_y, self.ids.desc.pos, self.size)
+
+    def go_to_yt(self):
+        webbrowser.open('https://www.youtube.com')
+        print('yt!')
+
+    def go_to_drive(self):
+        webbrowser.open('https://drive.google.com')
+        print('drive!')
 
 class ComparisonScreen(Screen):
     def __init__(self, **kwargs):
@@ -140,4 +193,5 @@ class PricingApp(App):
 
 if __name__ == '__main__':
     LabelBase.register(name='NotoSansCJK',fn_regular='font/NotoSansCJKtc-Regular.otf')
+    #Window.size = (640,960)
     PricingApp().run()
